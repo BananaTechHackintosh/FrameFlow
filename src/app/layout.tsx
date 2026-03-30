@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -20,6 +21,18 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full">
       <body className="min-h-full bg-background text-foreground antialiased">
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-GRFB28E2KJ"
+          strategy="afterInteractive"
+        />
+        <Script id="google-gtag" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-GRFB28E2KJ');
+          `}
+        </Script>
         <div className="relative flex min-h-screen flex-col">
           <div className="pointer-events-none absolute inset-0 overflow-hidden">
             <div className="absolute left-[-8rem] top-[-10rem] h-80 w-80 rounded-full bg-[radial-gradient(circle,_rgba(255,110,58,0.26),_transparent_70%)] blur-2xl" />
