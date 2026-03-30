@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import Script from "next/script";
 import "./globals.css";
 import { SiteFooter } from "@/components/site-footer";
@@ -43,6 +44,7 @@ export default function RootLayout({
           <main className="relative z-10 flex-1">{children}</main>
           <SiteFooter />
         </div>
+        <Analytics />
       </body>
     </html>
   );
