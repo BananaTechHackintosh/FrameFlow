@@ -17,7 +17,7 @@ export function MediaCard({ item }: { item: MediaSummary }) {
 
   return (
     <article className="group animate-rise">
-      <div className="glass-panel poster-shine overflow-hidden rounded-[1.6rem]">
+      <div className="glass-panel poster-shine hover-lift overflow-hidden rounded-[1.6rem]">
         <Link href={detailHref} className="block">
           <div className="relative aspect-[2/3] overflow-hidden bg-white/5">
             {poster ? (

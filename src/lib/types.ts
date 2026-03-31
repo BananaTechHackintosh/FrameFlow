@@ -36,6 +36,7 @@ export type VideoResult = {
 export type MovieDetails = {
   id: number;
   mediaType: "movie";
+  imdbId: string | null;
   title: string;
   overview: string;
   posterPath: string | null;

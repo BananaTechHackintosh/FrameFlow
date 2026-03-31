@@ -3,8 +3,12 @@ import Link from "next/link";
 import { MediaRail } from "@/components/media-rail";
 import { WatchPlayer } from "@/components/watch-player";
 import { getMovieDetails } from "@/lib/tmdb";
-import { buildMovieEmbedUrl } from "@/lib/vidsrc";
-import { formatRuntime, formatVote } from "@/lib/utils";
+import {
+  buildGoDriveMovieEmbedUrl,
+  buildMovieEmbedUrl,
+  isStreamServer,
+} from "@/lib/vidsrc";
+import { formatRuntime, formatVote, pickString } from "@/lib/utils";
 
 export async function generateMetadata(
   props: PageProps<"/watch/movie/[id]">,
@@ -14,7 +18,7 @@ export async function generateMetadata(
 
   return {
     title: movie ? `Watch ${movie.title}` : "Watch Movie",
-    description: movie?.overview ?? "Movie playback page powered by vidsrc.wtf.",
+    description: movie?.overview ?? "Movie playback page with multiple streaming servers.",
   };
 }
 
@@ -22,8 +26,32 @@ export default async function WatchMoviePage(
   props: PageProps<"/watch/movie/[id]">,
 ) {
   const { id } = await props.params;
+  const searchParams = await props.searchParams;
   const movie = await getMovieDetails(id);
-  const embedUrl = buildMovieEmbedUrl(id);
+  const requestedServer = pickString(searchParams.server);
+  const selectedServer = isStreamServer(requestedServer)
+    ? requestedServer
+    : "vidsrc";
+  const servers = [
+    {
+      id: "vidsrc" as const,
+      label: "VidSrc",
+      embedUrl: buildMovieEmbedUrl(id),
+      supportsProgress: true,
+      hint: "Best for everyday watching and picking up where you left off.",
+    },
+    ...(movie?.imdbId
+      ? [
+          {
+            id: "godrive" as const,
+            label: "GoDrive",
+            embedUrl: buildGoDriveMovieEmbedUrl(movie.imdbId),
+            supportsProgress: false,
+            hint: "Try this source if the default stream is slow or unavailable.",
+          },
+        ]
+      : []),
+  ];
 
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-col gap-10 px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
@@ -41,8 +69,8 @@ export default async function WatchMoviePage(
 
       <WatchPlayer
         title={movie?.title ?? `Movie ${id}`}
-        embedUrl={embedUrl}
-        hint="The iframe listens for MEDIA_DATA messages from vidsrc.wtf and writes them into localStorage for the homepage continue-watching rail."
+        defaultServer={selectedServer}
+        servers={servers}
       />
 
       {movie ? (

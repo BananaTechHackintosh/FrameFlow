@@ -3,8 +3,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { WatchPlayer } from "@/components/watch-player";
 import { getTvDetails, getTvSeason } from "@/lib/tmdb";
-import { buildTvEmbedUrl } from "@/lib/vidsrc";
-import { getWatchHref } from "@/lib/utils";
+import {
+  buildGoDriveTvEmbedUrl,
+  buildTvEmbedUrl,
+  isStreamServer,
+} from "@/lib/vidsrc";
+import { getWatchHref, pickString } from "@/lib/utils";
 
 export async function generateMetadata(
   props: PageProps<"/watch/tv/[id]/season/[season]/episode/[episode]">,
@@ -16,7 +20,7 @@ export async function generateMetadata(
     title: show
       ? `Watch ${show.title} S${season}E${episode}`
       : `Watch TV S${season}E${episode}`,
-    description: show?.overview ?? "TV episode playback page powered by vidsrc.wtf.",
+    description: show?.overview ?? "TV episode playback page with multiple streaming servers.",
   };
 }
 
@@ -24,10 +28,15 @@ export default async function WatchTvEpisodePage(
   props: PageProps<"/watch/tv/[id]/season/[season]/episode/[episode]">,
 ) {
   const { id, season, episode } = await props.params;
+  const searchParams = await props.searchParams;
   const [show, seasonData] = await Promise.all([
     getTvDetails(id),
     getTvSeason(id, season),
   ]);
+  const requestedServer = pickString(searchParams.server);
+  const selectedServer = isStreamServer(requestedServer)
+    ? requestedServer
+    : "vidsrc";
 
   const selectedEpisode = seasonData?.episodes.find(
     (item) => item.episode_number === Number(episode),
@@ -37,7 +46,22 @@ export default async function WatchTvEpisodePage(
     notFound();
   }
 
-  const embedUrl = buildTvEmbedUrl(id, season, episode);
+  const servers = [
+    {
+      id: "vidsrc" as const,
+      label: "VidSrc",
+      embedUrl: buildTvEmbedUrl(id, season, episode),
+      supportsProgress: true,
+      hint: "Best for everyday watching and returning to the right episode later.",
+    },
+    {
+      id: "godrive" as const,
+      label: "GoDrive",
+      embedUrl: buildGoDriveTvEmbedUrl(id, season, episode),
+      supportsProgress: false,
+      hint: "Try this source if the default stream is slow or unavailable.",
+    },
+  ];
   const previousEpisode =
     selectedEpisode && selectedEpisode.episode_number > 1
       ? selectedEpisode.episode_number - 1
@@ -69,8 +93,8 @@ export default async function WatchTvEpisodePage(
               }`
             : `TV Episode ${id}`
         }
-        embedUrl={embedUrl}
-        hint="Resume state and last watched episode are stored from vidsrc.wtf postMessage events, matching the documented MEDIA_DATA payload."
+        defaultServer={selectedServer}
+        servers={servers}
       />
 
       <section className="glass-panel rounded-[2rem] p-8">

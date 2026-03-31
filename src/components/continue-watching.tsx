@@ -53,7 +53,7 @@ export function ContinueWatching() {
             <Link
               key={`${item.type}-${item.id}`}
               href={meta.href}
-              className="glass-panel group overflow-hidden rounded-[1.8rem]"
+              className="glass-panel hover-lift group animate-rise overflow-hidden rounded-[1.8rem]"
             >
               <div className="relative min-h-56">
                 {backdrop ? (

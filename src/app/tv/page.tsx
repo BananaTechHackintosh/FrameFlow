@@ -44,8 +44,8 @@ export default async function TvPage(props: PageProps<"/tv">) {
           <div className="max-w-2xl">
             <h1 className="display-face text-5xl uppercase text-white">TV Shows</h1>
             <p className="mt-4 text-sm leading-7 text-muted sm:text-base">
-              Track current series, binge older hits, and jump straight to season and
-              episode watch routes.
+              Track current series, binge older hits, and jump straight into the
+              exact season and episode you want.
             </p>
           </div>
 

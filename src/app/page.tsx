@@ -30,7 +30,7 @@ export default async function HomePage() {
 
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-col gap-16 px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
-      <section className="glass-panel relative overflow-hidden rounded-[2.5rem]">
+      <section className="glass-panel animate-rise relative overflow-hidden rounded-[2.5rem]">
         {heroImage ? (
           <div
             className="absolute inset-0 bg-cover bg-center opacity-55"
@@ -39,7 +39,7 @@ export default async function HomePage() {
         ) : null}
         <div className="absolute inset-0 bg-[linear-gradient(108deg,_rgba(6,8,13,0.98)_0%,_rgba(6,8,13,0.85)_44%,_rgba(6,8,13,0.32)_100%)]" />
         <div className="relative grid gap-10 px-6 py-10 sm:px-10 lg:grid-cols-[1.1fr_0.9fr] lg:px-12 lg:py-14">
-          <div className="max-w-3xl">
+          <div className="max-w-3xl animate-rise delay-1">
             <p className="text-sm font-semibold uppercase tracking-[0.3em] text-accent-soft">
               Full catalog + instant playback
             </p>
@@ -47,8 +47,8 @@ export default async function HomePage() {
               Stream films and series through a cinematic front door.
             </h1>
             <p className="mt-6 max-w-2xl text-base leading-8 text-white/78 sm:text-lg">
-              Browse trending titles, drill into cast and season data, then open a
-              `vidsrc.wtf` player route with continue-watching support built in.
+              Browse trending titles, explore cast and season details, then start
+              watching instantly with saved progress where available.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
@@ -67,7 +67,7 @@ export default async function HomePage() {
             </div>
 
             {featured ? (
-              <div className="mt-10 rounded-[1.8rem] border border-white/10 bg-black/22 p-5">
+              <div className="hover-lift animate-rise animate-float-slow delay-3 mt-10 rounded-[1.8rem] border border-white/10 bg-black/22 p-5">
                 <p className="text-xs uppercase tracking-[0.24em] text-accent-soft">
                   Featured now
                 </p>
@@ -82,7 +82,10 @@ export default async function HomePage() {
           </div>
 
           <div className="flex flex-col gap-4 lg:items-end">
-            <form action="/search" className="glass-panel w-full rounded-[1.8rem] p-5">
+            <form
+              action="/search"
+              className="glass-panel hover-lift animate-rise delay-2 w-full rounded-[1.8rem] p-5"
+            >
               <p className="text-xs uppercase tracking-[0.22em] text-accent-soft">
                 Quick search
               </p>
@@ -113,15 +116,22 @@ export default async function HomePage() {
               </div>
             </form>
 
-            <div className="grid w-full gap-4 sm:grid-cols-3">
+            <div className="grid w-full gap-4 sm:grid-cols-2 2xl:grid-cols-3">
               {[
                 ["Trending now", `${trendingAll.length}+ picks`],
-                ["TV spotlight", `${trendingTv.items.length} live rails`],
-                ["Player sync", "Continue watching"],
-              ].map(([label, value]) => (
-                <div key={label} className="glass-panel rounded-[1.6rem] p-5">
+                ["TV spotlight", `${trendingTv.items.length} series picks`],
+                ["Pick up later", "Saved progress"],
+              ].map(([label, value], index) => (
+                <div
+                  key={label}
+                  className={`glass-panel hover-lift animate-rise rounded-[1.6rem] p-6 ${
+                    index === 0 ? "delay-2" : index === 1 ? "delay-3" : "delay-4"
+                  }`}
+                >
                   <p className="text-xs uppercase tracking-[0.22em] text-muted">{label}</p>
-                  <p className="display-face mt-3 text-3xl uppercase text-white">{value}</p>
+                  <p className="display-face mt-4 text-3xl uppercase leading-[0.95] text-white">
+                    {value}
+                  </p>
                 </div>
               ))}
             </div>

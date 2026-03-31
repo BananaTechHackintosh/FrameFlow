@@ -107,6 +107,7 @@ function normalizeMediaSummary(result: TmdbResult): MediaSummary | null {
 
 function mapMovieDetails(data: {
   id: number;
+  imdb_id: string | null;
   title: string;
   overview: string;
   poster_path: string | null;
@@ -125,6 +126,7 @@ function mapMovieDetails(data: {
   return {
     id: data.id,
     mediaType: "movie",
+    imdbId: data.imdb_id,
     title: data.title,
     overview: data.overview,
     posterPath: data.poster_path,

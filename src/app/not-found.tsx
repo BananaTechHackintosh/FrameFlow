@@ -11,7 +11,7 @@ export default function NotFound() {
           That title or episode could not be loaded.
         </h1>
         <p className="mt-4 max-w-2xl text-sm leading-7 text-muted sm:text-base">
-          The TMDB ID may be invalid, or the selected season and episode do not
+          The title may be unavailable, or the selected season and episode do not
           exist for this show.
         </p>
         <div className="mt-8 flex flex-wrap gap-3">

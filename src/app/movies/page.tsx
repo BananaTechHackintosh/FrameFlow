@@ -44,8 +44,8 @@ export default async function MoviesPage(props: PageProps<"/movies">) {
           <div className="max-w-2xl">
             <h1 className="display-face text-5xl uppercase text-white">Movies</h1>
             <p className="mt-4 text-sm leading-7 text-muted sm:text-base">
-              Filter by category or genre, then jump straight into a detail page or
-              `vidsrc.wtf` watch route.
+              Filter by category or genre, then jump straight into details or start
+              watching in a click.
             </p>
           </div>
 

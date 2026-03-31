@@ -9,8 +9,8 @@ export function NoTmdbState() {
       </h2>
       <p className="mt-4 max-w-2xl text-sm leading-7 text-muted sm:text-base">
         This app needs `TMDB_API_KEY` in a local `.env.local` file to load posters,
-        search results, genres, movie details, and TV episode data. The watch pages
-        are wired to `vidsrc.wtf`, but the catalog experience depends on TMDB.
+        search results, genres, movie details, and TV episode data. Without it,
+        the browsing and discovery experience cannot load.
       </p>
       <pre className="mt-6 overflow-x-auto rounded-3xl border border-white/8 bg-black/35 p-4 text-sm text-white/80">
 {`TMDB_API_KEY=your_tmdb_api_key_here

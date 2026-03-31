@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     template: "%s | FrameFlow",
   },
   description:
-    "A cinematic movie and TV streaming frontend powered by TMDB discovery data and vidsrc.wtf playback embeds.",
+    "A cinematic movie and TV streaming app for browsing titles, opening streams, and picking up where you left off.",
 };
 
 export default function RootLayout({
